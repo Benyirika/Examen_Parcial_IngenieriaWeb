@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxStay PMS - Nueva Reserva</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+// Misma paleta Brand_core en todo el proyecto
+tailwind.config = { theme: { extend: {
+  colors: { primary:"#002045", "primary-container":"#1a365d", secondary:"#0a6c44",
+    "secondary-container":"#9ff5c1", tertiary:"#3e1200", error:"#ba1a1a",
+    "error-container":"#ffdad6", surface:"#f9f9ff", background:"#f9f9ff",
+    "surface-container":"#e7eeff", "surface-container-low":"#f0f3ff",
+    "surface-container-high":"#dee8ff", "surface-container-highest":"#d8e3fa",
+    "surface-container-lowest":"#ffffff", outline:"#74777f", "outline-variant":"#c4c6cf",
+    "on-surface":"#111c2c", "on-surface-variant":"#43474e", "on-primary":"#ffffff" },
+  fontFamily: { display:["Hanken Grotesk"], body:["Inter"] }
+}}};
+</script>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../shared/nav.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+  <body class="bg-background font-body">
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <a href="../Menu Principal/index.html" class="brand brand-link" title="Menú Principal">
+      <div class="brand-icon"><i data-lucide="hotel"></i></div>
+      <div class="brand-text"><h1 class="headline">LuxStay PMS</h1><p>Gestión Operativa</p></div>
+    </a>
+    <nav class="nav-menu">
+      <a href="#" class="nav-item disabled" title="Próximamente"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+      <a href="../Modulo Dashboard Ocupacion/index.html" class="nav-item"><i data-lucide="calendar-days"></i><span>Disponibilidad</span></a>
+      <a href="../Modulo Nueva Reserva/index.html" class="nav-item active"><i data-lucide="calendar-plus"></i><span>Nueva Reserva</span></a>
+      <a href="../Modulo Mantenimiento y Limpieza/index.html" class="nav-item"><i data-lucide="sparkles"></i><span>Limpieza</span></a>
+      <a href="../Modulo Huespedes/index.html" class="nav-item"><i data-lucide="users"></i><span>Huéspedes</span></a>
+            <a href="#!" class="nav-item"><i data-lucide="settings"></i><span>Configuración</span></a>
+<div class="nav-divider"></div>
+      <a href="../Menu Principal/index.html" class="nav-item menu-principal"><i data-lucide="home"></i><span>Menú Principal</span></a>
+    </nav>
+  </div></aside>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="branch-area">
+        <i data-lucide="map-pin" class="icon-pin"></i>
+        <span class="branch-title">Sucursal: <strong id="BranchName">Centro Histórico</strong></span>
+        <div class="branch-tabs" id="branchTabs">
+          <button class="tab" data-suc="Centro Histórico">Centro Histórico</button>
+          <button class="tab" data-suc="Magisterio">Magisterio</button>
+          <button class="tab" data-suc="Pisac">Pisac</button>
+        </div>
+      </div>
+      <div class="user-panel">
+        <div class="search-box"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Buscar habitación, huésped..."></div>
+        <button class="btn-icon" title="Notificaciones"><i data-lucide="bell"></i><span class="badge-dot"></span></button>        <div class="user-profile"><div class="avatar" id="AvatarInitials">CM</div><span class="user-name" id="UserNameTopbar">Carlos M.</span></div>
+        <button id="btnLogoutDash" class="btn-icon" title="Cerrar sesión"><i data-lucide="log-out"></i></button>
+      </div>
+    </header>
+    <main class="content-area">
+      <div class="header-section">
+        <h1 class="font-display">Nueva Reserva</h1>
+        <span id="reloj" class="reloj"></span>
+      </div>
+
+<!-- Pasos -->
+    <div id="stepper" class="card-step">
+      <div class="paso activo" data-p="1"><span>1</span><small>Fechas</small></div>
+      <div class="paso" data-p="2"><span>2</span><small>Titular</small></div>
+      <div class="paso" data-p="3"><span>3</span><small>Acompañantes</small></div>
+      <div class="paso" data-p="4"><span>4</span><small>Servicios</small></div>
+      <div class="paso" data-p="5"><span>5</span><small>Confirmar</small></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+      <div class="lg:col-span-2 flex flex-col gap-4">
+
+        <!-- PASO 1 con calendario propio -->
+        <section id="paso1" class="card">
+          <h3><span class="material-symbols-outlined">calendar_month</span> 1. Fechas y Habitación</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="relative">
+              <label>Check-in (DD/MM/AAAA) *</label>
+              <div class="fecha-box">
+                <input id="checkin" placeholder="12/10/2026" maxlength="10">
+                <button class="btn-cal" data-para="checkin"><span class="material-symbols-outlined">calendar_month</span></button>
+              </div>
+              <small class="msg" id="msgIn"></small>
+            </div>
+            <div class="relative">
+              <label>Check-out (DD/MM/AAAA) *</label>
+              <div class="fecha-box">
+                <input id="checkout" placeholder="15/10/2026" maxlength="10">
+                <button class="btn-cal" data-para="checkout"><span class="material-symbols-outlined">calendar_month</span></button>
+              </div>
+              <small class="msg" id="msgOut"></small>
+            </div>
+          </div>
+          <!-- Calendario personalizado Brand_core (centrado) -->
+          <div class="cal-wrap">
+            <div id="cal" class="cal hidden">
+              <div class="cal-head">
+                <button id="calPrev"><span class="material-symbols-outlined">chevron_left</span></button>
+                <b id="calTitulo">Mes</b>
+                <button id="calNext"><span class="material-symbols-outlined">chevron_right</span></button>
+              </div>
+              <div class="cal-grid cab"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+              <div id="calDias" class="cal-grid"></div>
+              <button id="calHoy" class="btn-hoy"><span class="material-symbols-outlined">today</span> Hoy: <span id="hoyTxt"></span></button>
+            </div>
+          </div>
+          <div class="centro"><p id="nochesTxt" class="noches">3 noches</p></div>
+          <label class="mt-2">Tipo de habitación *</label>
+          <div id="habitaciones" class="grid grid-cols-3 gap-2"></div>
+        </section>
+
+        <!-- PASO 2 -->
+        <section id="paso2" class="card hidden">
+          <h3><span class="material-symbols-outlined">person</span> 2. Huésped Titular</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label>Nombres * (solo letras)</label><input id="tNombre" placeholder="Carlos" maxlength="40" autocomplete="given-name"><small class="msg" id="mNombre"></small></div>
+            <div><label>Apellidos * (solo letras)</label><input id="tApellidos" placeholder="Mendoza Ruiz" maxlength="40" autocomplete="family-name"><small class="msg" id="mApellidos"></small></div>
+            <div><label>Email * (máx. 60)</label><input id="tEmail" placeholder="cliente@correo.com" maxlength="60" inputmode="email"><small class="hint"><span id="cEmail">0</span>/60</small><small class="msg" id="mEmail"></small></div>
+            <div><label>Teléfono * (solo números)</label>
+              <div class="flex gap-1"><input id="tPrefijo" value="+51" readonly class="w-16 text-center bg-surface-container-low"><input id="tTelefono" placeholder="999 000 000" maxlength="12" inputmode="numeric"></div>
+              <small class="msg" id="mTelefono"></small>
+            </div>
+            <div><label>Tipo documento</label>
+              <select id="tTipoDoc"><option value="DNI">DNI (8 dígitos)</option><option value="Pasaporte">Pasaporte (6-12)</option><option value="CE">Carné Extranjería (9-12)</option></select>
+            </div>
+            <div><label>N° documento * (según tipo)</label><input id="tNumDoc" placeholder="12345678" maxlength="12" inputmode="text"><small class="msg" id="mNumDoc"></small></div>
+            <div class="col-span-2"><label>Nacionalidad *</label><select id="tNacionalidad"></select></div>
+          </div>
+        </section>
+
+        <!-- PASO 3 -->
+        <section id="paso3" class="card hidden">
+          <h3><span class="material-symbols-outlined">person_add</span> 3. Acompañantes <span class="text-sm font-normal">(opcional)</span></h3>
+          <p class="text-sm text-on-surface-variant">Si viaja solo, deje la lista vacía.</p>
+          <div id="listaAcomp" class="flex flex-col gap-2 mt-2"></div>
+          <button id="btnAgregar" class="btn-sec mt-2"><span class="material-symbols-outlined">add</span> Agregar acompañante (<span id="conteo">0</span>/6)</button>
+        </section>
+
+        <!-- PASO 4 estilo wireframe -->
+        <section id="paso4" class="card hidden">
+          <div class="flex justify-between items-end flex-wrap gap-2">
+            <div>
+              <h3 class="mb-1"><span class="material-symbols-outlined">restaurant</span> 4. Alimentación y Servicios</h3>
+              <p class="sub">Configure planes y extras de la estadía.</p>
+            </div>
+            <div class="flex gap-2">
+              <button id="btnSin" class="btn-sec"><span class="material-symbols-outlined">clear_all</span> Sin Servicios</button>
+              <button id="btnPremium" class="btn-pri"><span class="material-symbols-outlined">done_all</span> Premium</button>
+            </div>
+          </div>
+          <h4 class="tit-sec"><span class="material-symbols-outlined">restaurant</span> Planes de Alimentación</h4>
+          <div id="planes" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2"></div>
+          <h4 class="tit-sec"><span class="material-symbols-outlined">room_service</span> Servicios Adicionales</h4>
+          <div id="servicios" class="lista-serv mt-2"></div>
+        </section>
+
+        <!-- PASO 5 centrado con color -->
+        <section id="paso5" class="card hidden confirm-grande">
+          <h3><span class="material-symbols-outlined">check_circle</span> 5. Confirmación</h3>
+          <p class="sub">Revise todo lo contratado antes de confirmar.</p>
+          <div id="resumenFinal" class="res-final"></div>
+        </section>
+
+        <div class="flex justify-between">
+          <button id="btnPrev" class="btn-sec" disabled><span class="material-symbols-outlined">arrow_back</span> Anterior</button>
+          <button id="btnNext" class="btn-pri">Siguiente <span class="material-symbols-outlined">arrow_forward</span></button>
+        </div>
+      </div>
+
+      <aside class="card resumen">
+        <h3>Resumen de Tarifa</h3>
+        <div id="resumenBox" class="text-sm"></div>
+        <hr class="my-2">
+        <div class="flex justify-between font-bold text-primary text-lg"><span>Total</span><span id="totalTxt">S/. 0.00</span></div>
+        <small class="text-gray-500">Incluye IGV 18%</small>
+      </aside>
+    </div>
+    </main>
+  </div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-card">
+    <span class="material-symbols-outlined ok-ico">check_circle</span>
+    <h2 class="font-display text-xl text-primary">Reserva Confirmada</h2>
+    <p>Código: <b id="codigo"></b></p>
+    <p id="modalDato" class="text-sm"></p>
+    <button id="btnNueva" class="btn-pri w-full mt-2">Crear Nueva Reserva</button>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="../shared/nav.js"></script>
+<script>window.MODULE_ID = "nueva-reserva";</script>
+<script src="script.js"></script>
+
+</body>
+</html>

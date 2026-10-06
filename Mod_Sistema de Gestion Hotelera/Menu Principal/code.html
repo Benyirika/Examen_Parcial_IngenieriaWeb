@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="es" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>LuxStay PMS - Portal Operativo</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#002045","on-tertiary-container":"#f47d45","on-surface":"#111c2c","outline-variant":"#c4c6cf","error":"#ba1a1a","secondary-fixed":"#9ff5c1","inverse-primary":"#adc7f7","surface-container-highest":"#d8e3fa","on-tertiary-fixed-variant":"#7d2d00","on-secondary-fixed-variant":"#005231","primary-fixed-dim":"#adc7f7","on-secondary-fixed":"#002111","secondary":"#0a6c44","on-secondary":"#ffffff","tertiary-fixed-dim":"#ffb596","inverse-on-surface":"#ebf1ff","primary-container":"#1a365d","outline":"#74777f","on-error-container":"#93000a","background":"#f9f9ff","on-secondary-container":"#167249","on-primary":"#ffffff","tertiary-fixed":"#ffdbcd","secondary-fixed-dim":"#83d8a6","on-primary-fixed":"#001b3c","surface-container-low":"#f0f3ff","primary-fixed":"#d6e3ff","surface-bright":"#f9f9ff","surface-tint":"#455f88","on-surface-variant":"#43474e","surface-variant":"#d8e3fa","tertiary":"#3e1200","on-primary-fixed-variant":"#2d476f","inverse-surface":"#263142","secondary-container":"#9ff5c1","surface-dim":"#cfdaf1","tertiary-container":"#612100","on-background":"#111c2c","surface-container":"#e7eeff","on-tertiary-fixed":"#360f00","on-primary-container":"#86a0cd","error-container":"#ffdad6","surface-container-high":"#dee8ff","on-error":"#ffffff","surface-container-lowest":"#ffffff","on-tertiary":"#ffffff","surface":"#f9f9ff"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"md":"24px","xl":"64px","sm":"12px","lg":"40px","grid-margin":"24px","base":"8px","grid-gutter":"16px","xs":"4px"},fontFamily:{"label-caps":["Inter"],"display-lg":["Hanken Grotesk"],"body-lg":["Inter"],"body-sm":["Inter"],"headline-lg":["Hanken Grotesk"],"data-mono":["JetBrains Mono"],"body-md":["Inter"],"headline-lg-mobile":["Hanken Grotesk"],"headline-md":["Hanken Grotesk"]},fontSize:{"label-caps":["11px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"700"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.01em","fontWeight":"600"}],"data-mono":["13px",{"lineHeight":"16px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-lg-mobile":["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-md":["20px",{"lineHeight":"28px","fontWeight":"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 w-full z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-grid-margin flex items-center justify-between gap-base"><div class="flex items-center gap-md"><div class="flex items-center gap-xs"><span class="material-symbols-outlined text-primary text-[28px]">domain</span><div class="flex flex-col"><span class="font-headline-md text-headline-md tracking-tight text-primary leading-none">LuxStay</span><span class="font-label-caps text-label-caps uppercase text-outline leading-tight">PMS Core</span></div></div><div class="hidden sm:flex items-center gap-xs px-sm py-xs rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer"><span class="material-symbols-outlined text-on-surface-variant text-[18px]">storefront</span><div class="flex flex-col text-left"><span class="font-label-caps text-label-caps uppercase text-outline">Propiedad</span><span class="font-body-sm text-body-sm font-medium text-on-surface">Centro Histórico</span></div><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div></div><nav class="hidden xl:flex items-center gap-xs" data-active-classes="bg-surface-container-high text-on-surface font-semibold rounded-lg"><a aria-current="page" class="px-sm py-xs transition-all bg-surface-container-high text-on-surface font-semibold rounded-lg" data-path="portal-de-modulos" href="#">Portal Principal</a></nav><div class="flex items-center gap-sm"><div class="hidden md:flex items-center gap-xs px-sm py-xs rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm">Buscar huésped o folio...</span><span class="font-data-mono text-data-mono text-outline ml-base bg-surface-container-highest px-xs rounded">⌘K</span></div><div class="flex items-center gap-xs"><button aria-label="Acciones rápidas" class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">bolt</span></button><button aria-label="Notificaciones operativas" class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary"></span></button></div><div class="flex items-center gap-xs pl-xs"><div class="hidden lg:flex flex-col text-right"><span class="font-body-sm text-body-sm font-semibold text-on-surface leading-tight">Carlos Morales</span><span class="font-label-caps text-label-caps text-outline leading-tight">Operador Nocturno</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="w-full pt-16 flex-1 bg-background"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto px-grid-margin py-xl flex flex-col justify-between min-h-[calc(100vh-7rem)]">
+<!-- Top System Pulse & Hero Greeting -->
+<div class="flex flex-col items-center text-center space-y-sm max-w-3xl mx-auto">
+<!-- Live Pill -->
+<div class="inline-flex items-center gap-xs px-sm py-xs bg-surface-container rounded-full shadow-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-data-mono text-data-mono text-on-surface-variant font-medium">
+          Sistema en línea • Turno Activo: Mañana • 12 de Octubre, 2026
+        </span>
+</div>
+<!-- Header Typography -->
+<div class="space-y-xs pt-xs">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight font-semibold">
+          Bienvenido, Administrador
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto">
+          Selecciona un módulo operativo para comenzar la jornada en <span class="font-semibold text-on-surface">Sucursal Centro Histórico</span>.
+        </p>
+</div>
+<!-- Quick Context Chip Row -->
+<div class="flex items-center gap-sm pt-xs">
+<div class="flex items-center gap-xs bg-surface-container-low px-sm py-xs rounded-lg">
+<span class="material-symbols-outlined text-outline text-[16px]">domain_verification</span>
+<span class="font-label-caps text-label-caps uppercase text-outline">PMS Nodo Principal</span>
+</div>
+<div class="flex items-center gap-xs bg-secondary-fixed/50 text-on-secondary-fixed-variant px-sm py-xs rounded-lg">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span class="font-label-caps text-label-caps uppercase font-bold tracking-wider">Canales Sincronizados</span>
+</div>
+</div>
+</div>
+<!-- Center Section: 2x2 Clean Balanced Module Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md w-full my-lg max-w-5xl mx-auto">
+<!-- Module Card 1: Ocupación y Disponibilidad -->
+<a class="group relative flex flex-col justify-between p-lg bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer overflow-hidden" href="#">
+<div class="flex items-start justify-between">
+<!-- Icon Plinth -->
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary-container group-hover:bg-primary group-hover:text-on-primary transition-colors duration-200">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+<rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect>
+<line x1="16" x2="16" y1="2" y2="6"></line>
+<line x1="8" x2="8" y1="2" y2="6"></line>
+<line x1="3" x2="21" y1="10" y2="10"></line>
+<rect fill="currentColor" fill-opacity="0.3" height="3" width="3" x="7" y="14"></rect>
+<rect fill="currentColor" fill-opacity="0.3" height="3" width="3" x="14" y="14"></rect>
+</svg>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-secondary px-xs py-0.5 rounded bg-secondary-container/60 font-semibold tracking-wide">
+            En vivo
+          </span>
+</div>
+<div class="mt-md space-y-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary font-semibold tracking-tight group-hover:text-primary-container transition-colors">
+              Ocupación y Disponibilidad
+            </h2>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all text-[20px]">
+              arrow_forward
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Gantt interactivo, estado de habitaciones y matriz de tarifas en tiempo real.
+          </p>
+</div>
+<!-- Micro Status Ribbon inside Card -->
+<div class="mt-md pt-sm flex items-center gap-md bg-surface-container-low px-sm py-xs rounded-lg">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">grid_view</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Rack Maestro</span>
+</div>
+<span class="text-outline text-body-sm">•</span>
+<span class="font-data-mono text-data-mono text-primary font-medium">94% Bloques libres</span>
+</div>
+</a>
+<!-- Module Card 2: Nueva Reserva -->
+<a class="group relative flex flex-col justify-between p-lg bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer overflow-hidden" href="#">
+<div class="flex items-start justify-between">
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary-container group-hover:bg-primary group-hover:text-on-primary transition-colors duration-200">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="8.5" cy="7" r="4"></circle>
+<line x1="20" x2="20" y1="8" y2="14"></line>
+<line x1="23" x2="17" y1="11" y2="11"></line>
+</svg>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-primary px-xs py-0.5 rounded bg-surface-container font-semibold tracking-wide">
+            Flujo Express
+          </span>
+</div>
+<div class="mt-md space-y-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary font-semibold tracking-tight group-hover:text-primary-container transition-colors">
+              Nueva Reserva
+            </h2>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all text-[20px]">
+              arrow_forward
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Registro rápido de titular, acompañantes, depósitos y selección de servicios.
+          </p>
+</div>
+<div class="mt-md pt-sm flex items-center gap-md bg-surface-container-low px-sm py-xs rounded-lg">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">add_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Check-in Directo</span>
+</div>
+<span class="text-outline text-body-sm">•</span>
+<span class="font-data-mono text-data-mono text-primary font-medium">Tarifas Flexibles</span>
+</div>
+</a>
+<!-- Module Card 3: Directorio de Huéspedes -->
+<a class="group relative flex flex-col justify-between p-lg bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer overflow-hidden" href="#">
+<div class="flex items-start justify-between">
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary-container group-hover:bg-primary group-hover:text-on-primary transition-colors duration-200">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+<circle cx="9" cy="7" r="4"></circle>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</svg>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant px-xs py-0.5 rounded bg-surface-container-high font-semibold tracking-wide">
+            Kardex VIP
+          </span>
+</div>
+<div class="mt-md space-y-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary font-semibold tracking-tight group-hover:text-primary-container transition-colors">
+              Directorio de Huéspedes
+            </h2>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all text-[20px]">
+              arrow_forward
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Historial de estancias, validación de folios, preferencias y perfiles corporativos.
+          </p>
+</div>
+<div class="mt-md pt-sm flex items-center gap-md bg-surface-container-low px-sm py-xs rounded-lg">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">badge</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Cartera Activa</span>
+</div>
+<span class="text-outline text-body-sm">•</span>
+<span class="font-data-mono text-data-mono text-primary font-medium">1,280 Clientes</span>
+</div>
+</a>
+<!-- Module Card 4: Limpieza y Mantenimiento -->
+<a class="group relative flex flex-col justify-between p-lg bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer overflow-hidden" href="#">
+<div class="flex items-start justify-between">
+<div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary-container group-hover:bg-primary group-hover:text-on-primary transition-colors duration-200">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+<line x1="3" x2="21" y1="21" y2="21"></line>
+</svg>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-secondary px-xs py-0.5 rounded bg-secondary-container/60 font-semibold tracking-wide">
+            Housekeeping
+          </span>
+</div>
+<div class="mt-md space-y-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-primary font-semibold tracking-tight group-hover:text-primary-container transition-colors">
+              Limpieza y Mantenimiento
+            </h2>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all text-[20px]">
+              arrow_forward
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Monitoreo de cuartos limpios, sucios, turnos de amas de llaves y bloqueos técnicos.
+          </p>
+</div>
+<div class="mt-md pt-sm flex items-center gap-md bg-surface-container-low px-sm py-xs rounded-lg">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">cleaning_services</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">32 Inspeccionadas</span>
+</div>
+<span class="text-outline text-body-sm">•</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant">6 En Proceso</span>
+</div>
+</a>
+</div>
+<!-- Bottom Operational StatusBar & Control Strip -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-sm p-md flex flex-col lg:flex-row items-center justify-between gap-base">
+<!-- 3 Micro-Metrics Row -->
+<div class="flex flex-wrap items-center gap-lg w-full lg:w-auto justify-around lg:justify-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">hotel</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Ocupación Hoy</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">86%</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium">+4% vs ayer</span>
+</div>
+</div>
+</div>
+<div class="w-px h-8 bg-surface-container-highest hidden sm:block"></div>
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">flight_land</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Check-in Esperados</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">14</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">8 completados</span>
+</div>
+</div>
+</div>
+<div class="w-px h-8 bg-surface-container-highest hidden sm:block"></div>
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">meeting_room</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Habitaciones Operativas</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">42</span>
+<span class="font-body-sm text-body-sm text-outline font-data-mono">/ 45 totales</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Switch & Session Actions -->
+<div class="flex items-center gap-sm w-full lg:w-auto justify-end border-t lg:border-t-0 pt-sm lg:pt-0 border-surface-container">
+<button class="flex items-center gap-xs px-sm py-xs rounded-lg text-on-surface hover:bg-surface-container font-body-sm text-body-sm font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px] text-outline">swap_horiz</span>
+<span class="">Cambiar Sucursal</span>
+</button>
+<button class="flex items-center gap-xs px-sm py-xs rounded-lg text-error hover:bg-error-container/40 font-body-sm text-body-sm font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="">Cerrar Sesión</span>
+</button>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-low mt-auto"><div class="w-full px-grid-margin py-base flex flex-col md:flex-row items-center justify-between gap-base text-on-surface-variant font-body-sm text-body-sm"><div class="flex items-center gap-md"><span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-secondary"></span>Terminal Conectada • Servidor Principal</span><span class="font-data-mono text-data-mono text-outline">PMS Core v4.18.2</span></div><div class="flex items-center gap-md"><span class="font-data-mono text-data-mono text-outline">Turno Activo: #1042</span><span class="">© 2024 LuxStay Hospitality Systems. Todos los derechos reservados.</span></div></div></footer>
+
+</body></html>

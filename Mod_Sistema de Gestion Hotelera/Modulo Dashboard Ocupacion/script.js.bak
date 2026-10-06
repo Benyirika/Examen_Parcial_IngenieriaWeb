@@ -1,0 +1,544 @@
+// Base de datos de habitaciones físicas
+const roomsMeta = [
+  { id: '101', type: 'Standard', price: 120 },
+  { id: '102', type: 'Standard', price: 120 },
+  { id: '103', type: 'Doble', price: 150 },
+  { id: '201', type: 'Suite', price: 210 },
+  { id: '202', type: 'Suite', price: 210 },
+  { id: '203', type: 'Doble', price: 150 },
+  { id: '301', type: 'Standard', price: 120 }
+];
+
+// Registro cronológico de reservas y eventos reales por fecha (Año 2026)
+let bookingsRegistry = [
+  // Hab 101: Reserva de Carlos Mendoza solo del 12 al 15 de Octubre
+  {
+    id: 'B-101',
+    roomId: '101',
+    status: 'occupied',
+    guest: 'Carlos Mendoza',
+    startDate: '2026-10-12',
+    endDate: '2026-10-15',
+    plan: 'Desayuno Buffet (CP)',
+    total: '$ 324.00',
+    doc: 'DNI 77686441'
+  },
+  // Hab 101: Nueva reserva diferente en la siguiente semana
+  {
+    id: 'B-101-NEXT',
+    roomId: '101',
+    status: 'checkin',
+    guest: 'Javier Morales',
+    startDate: '2026-10-20',
+    endDate: '2026-10-23',
+    plan: 'Desayuno Buffet (CP)',
+    total: '$ 360.00',
+    doc: 'DNI 44321980'
+  },
+  // Hab 103: Limpieza pendiente el día 12
+  {
+    id: 'B-103',
+    roomId: '103',
+    status: 'dirty',
+    guest: 'Salida de Huésped',
+    startDate: '2026-10-12',
+    endDate: '2026-10-12',
+    housekeeper: 'María Quispe',
+    note: 'Limpieza profunda tras checkout y reposición de toallas'
+  },
+  // Hab 201: Elena Rostova del 12 al 16 de Octubre
+  {
+    id: 'B-201',
+    roomId: '201',
+    status: 'checkin',
+    guest: 'Elena Rostova',
+    startDate: '2026-10-12',
+    endDate: '2026-10-16',
+    plan: 'Media Pensión (MAP)',
+    total: '$ 840.00',
+    doc: 'Pasaporte A9823411'
+  },
+  // Hab 202: Bloqueo técnico solo por fuga del 12 al 14 de Octubre
+  {
+    id: 'B-202',
+    roomId: '202',
+    status: 'maintenance',
+    guest: 'Reparación Técnica',
+    startDate: '2026-10-12',
+    endDate: '2026-10-14',
+    technician: 'Soporte Climatización',
+    reason: 'Fuga de gas refrigerante en aire acondicionado'
+  },
+  // Hab 203: Alvaro Peña del 13 al 17 de Octubre
+  {
+    id: 'B-203',
+    roomId: '203',
+    status: 'occupied',
+    guest: 'Alvaro Peña',
+    startDate: '2026-10-13',
+    endDate: '2026-10-17',
+    plan: 'Desayuno Buffet (CP)',
+    total: '$ 600.00',
+    doc: 'DNI 45129874'
+  },
+  // Hab 203: Reserva para la semana posterior
+  {
+    id: 'B-203-NEXT',
+    roomId: '203',
+    status: 'checkin',
+    guest: 'Camila Benítez',
+    startDate: '2026-10-22',
+    endDate: '2026-10-25',
+    plan: 'Alojamiento Solo (EP)',
+    total: '$ 450.00',
+    doc: 'DNI 71239088'
+  }
+];
+
+// Fecha inicial activa: Lunes 12 de Octubre de 2026
+let currentStartDate = new Date(2026, 9, 12);
+
+// Formateador estándar YYYY-MM-DD
+function formatDate(d) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Navegador semanal dinámico
+function navigateWeek(direction) {
+  currentStartDate.setDate(currentStartDate.getDate() + (direction * 7));
+  updateWeekHeaders();
+  renderRack();
+}
+
+function updateWeekHeaders() {
+  const daysShort = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const monthsShort = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+
+  const headRow = document.getElementById('rackTableHeadRow');
+  headRow.innerHTML = '<th class="col-room">Habitación</th>';
+
+  const endDate = new Date(currentStartDate);
+  endDate.setDate(endDate.getDate() + 6);
+
+  const startDay = currentStartDate.getDate();
+  const startMonth = monthsShort[currentStartDate.getMonth()];
+  const endDay = endDate.getDate();
+  const endMonth = monthsShort[endDate.getMonth()];
+  const year = currentStartDate.getFullYear();
+
+  document.getElementById('currentWeekRange').textContent = `${startDay} ${startMonth} - ${endDay} ${endMonth} ${year}`;
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(currentStartDate);
+    d.setDate(d.getDate() + i);
+    const th = document.createElement('th');
+    th.textContent = `${daysShort[d.getDay()]} ${d.getDate()}`;
+    headRow.appendChild(th);
+  }
+}
+
+// Renderizado inteligente del Rack según las fechas de cada reserva
+function renderRack() {
+  const tbody = document.getElementById('rackTableBody');
+  const filter = document.getElementById('categoryFilter').value;
+  const search = document.getElementById('filterInput').value.toLowerCase().trim();
+
+  tbody.innerHTML = '';
+
+  // Días exactos de la semana visible
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(currentStartDate);
+    d.setDate(d.getDate() + i);
+    weekDays.push(formatDate(d));
+  }
+
+  const filteredRooms = roomsMeta.filter(room => {
+    const matchCategory = filter === 'ALL' || room.type === filter;
+    const matchSearch = room.id.includes(search);
+    return matchCategory && matchSearch;
+  });
+
+  // Contadores para métricas de la semana actual
+  let countOccupied = 0;
+  let countCheckin = 0;
+  let countMaintenance = 0;
+  let countDirty = 0;
+
+  filteredRooms.forEach(room => {
+    const tr = document.createElement('tr');
+
+    // Determina el estado actual de la habitación para el primer día de la semana
+    const firstDayBooking = getBookingForRoomAndDate(room.id, weekDays[0]);
+    const currentStatus = firstDayBooking ? firstDayBooking.status : 'free';
+
+    let roomCol = `
+      <td class="room-cell">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <strong style="color: #0f172a;">Hab. ${room.id}</strong>
+            <span style="display:block; font-size:10px; color:#94a3b8;">${room.type} - $${room.price}/n</span>
+          </div>
+          <span class="status-indicator ${getStatusDotClass(currentStatus)}"></span>
+        </div>
+      </td>
+    `;
+
+    let daysCols = '';
+    weekDays.forEach(dateStr => {
+      const booking = getBookingForRoomAndDate(room.id, dateStr);
+
+      if (booking) {
+        if (booking.status === 'occupied') countOccupied++;
+        else if (booking.status === 'checkin') countCheckin++;
+        else if (booking.status === 'maintenance') countMaintenance++;
+        else if (booking.status === 'dirty') countDirty++;
+
+        daysCols += `
+          <td style="padding: 4px; text-align:center;">
+            <div onclick="openModal('${booking.id}')" class="res-pill ${getPillClass(booking.status)}">
+              ${booking.guest || 'Ocupada'}
+            </div>
+          </td>
+        `;
+      } else {
+        // Habitación verdaderamente libre en esta fecha
+        daysCols += `
+          <td style="padding: 2px;">
+            <button onclick="bookSlot('${room.id}', '${dateStr}')" class="btn-slot-free" title="Crear reserva en Hab. ${room.id}">
+              +
+            </button>
+          </td>
+        `;
+      }
+    });
+
+    tr.innerHTML = roomCol + daysCols;
+    tbody.appendChild(tr);
+  });
+
+  updateKpis(filteredRooms.length, countOccupied, countCheckin, countMaintenance, countDirty);
+
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+// Búsqueda de reserva activa en una fecha específica
+function getBookingForRoomAndDate(roomId, dateStr) {
+  return bookingsRegistry.find(b => {
+    return b.roomId === roomId && dateStr >= b.startDate && dateStr <= b.endDate;
+  });
+}
+
+function updateKpis(totalRooms, occupied, checkin, maintenance, dirty) {
+  const totalSlots = totalRooms * 7;
+  const busySlots = occupied + checkin + maintenance + dirty;
+  const freeSlots = Math.max(0, totalSlots - busySlots);
+
+  document.getElementById('countFree').textContent = `${freeSlots} Días Libres`;
+  document.getElementById('countOccupied').textContent = `${occupied} Ocupadas`;
+  document.getElementById('countCheckin').textContent = `${checkin} Pendientes`;
+  document.getElementById('countMaintenance').textContent = `${maintenance} Bloqueadas`;
+  document.getElementById('countDirty').textContent = `${dirty} Pendientes`;
+
+  const occRate = totalSlots > 0 ? Math.round(((occupied + checkin) / totalSlots) * 100) : 0;
+  document.getElementById('kpiOccupancy').textContent = `${occRate}%`;
+}
+
+function getStatusDotClass(status) {
+  switch (status) {
+    case 'occupied': return 'status-indigo';
+    case 'checkin': return 'status-blue';
+    case 'maintenance': return 'status-amber';
+    case 'dirty': return 'status-rose';
+    default: return 'status-green';
+  }
+}
+
+function getPillClass(status) {
+  switch (status) {
+    case 'occupied': return 'pill-occupied';
+    case 'checkin': return 'pill-checkin';
+    case 'maintenance': return 'pill-maintenance';
+    case 'dirty': return 'pill-dirty';
+    default: return '';
+  }
+}
+
+// Ventana modal según la reserva seleccionada
+function openModal(bookingId) {
+  const booking = bookingsRegistry.find(b => b.id === bookingId);
+  if (!booking) return;
+
+  const room = roomsMeta.find(r => r.id === booking.roomId);
+  const modalBody = document.getElementById('modalDynamicBody');
+  document.getElementById('modalTitle').textContent = `Gestión Habitación ${booking.roomId}`;
+
+  if (booking.status === 'maintenance') {
+    modalBody.innerHTML = `
+      <div class="guest-badge-card" style="background:#fef3c7;">
+        <div>
+          <span class="label-tiny" style="color:#b45309;">Estado de la Habitación</span>
+          <span class="guest-name" style="color:#92400e;">En Mantenimiento</span>
+        </div>
+        <span class="badge-status" style="background:#fde68a; color:#b45309;">BLOQUEADA</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <div>
+          <span class="label-tiny">Categoría</span>
+          <p class="val-strong">${room ? room.type : 'Habitación'} (Piso ${booking.roomId[0]})</p>
+        </div>
+        <div>
+          <span class="label-tiny">Área Técnica</span>
+          <p class="val-strong">${booking.technician || 'Servicio Técnico'}</p>
+        </div>
+        <div style="grid-column: span 2;">
+          <span class="label-tiny">Motivo de Bloqueo</span>
+          <p class="val-strong" style="color:#78350f;">${booking.reason || 'Mantenimiento correctivo'}</p>
+        </div>
+        <div style="grid-column: span 2;">
+          <span class="label-tiny">Periodo de Aislamiento</span>
+          <p class="val-strong">${booking.startDate} al ${booking.endDate}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button onclick="releaseBooking('${booking.id}')" class="btn-action-primary" style="background:#0F5132;">
+          Liberar a Disponible
+        </button>
+        <button onclick="closeModal(); triggerToast('Mantenimiento extendido')" class="btn-action-light">
+          Extender Bloqueo
+        </button>
+      </div>
+    `;
+  } else if (booking.status === 'dirty') {
+    modalBody.innerHTML = `
+      <div class="guest-badge-card" style="background:#ffe4e6;">
+        <div>
+          <span class="label-tiny" style="color:#be123c;">Estado Ama de Llaves</span>
+          <span class="guest-name" style="color:#9f1239;">Limpieza Pendiente</span>
+        </div>
+        <span class="badge-status" style="background:#fecdd3; color:#be123c;">SUCIA</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <div>
+          <span class="label-tiny">Habitación</span>
+          <p class="val-strong">Hab. ${booking.roomId}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Camarera</span>
+          <p class="val-strong">${booking.housekeeper || 'Personal de Turno'}</p>
+        </div>
+        <div style="grid-column: span 2;">
+          <span class="label-tiny">Notas de Entrega</span>
+          <p class="val-strong">${booking.note}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button onclick="releaseBooking('${booking.id}')" class="btn-action-primary" style="background:#0F5132;">
+          Marcar como Limpia
+        </button>
+        <button onclick="closeModal(); triggerToast('Solicitada inspección de supervisión')" class="btn-action-light">
+          Inspeccionar
+        </button>
+      </div>
+    `;
+  } else if (booking.status === 'checkin') {
+    modalBody.innerHTML = `
+      <div class="guest-badge-card" style="background:#e0f2fe;">
+        <div>
+          <span class="label-tiny" style="color:#0369a1;">Check-in Programado</span>
+          <span class="guest-name" style="color:#075985;">${booking.guest}</span>
+        </div>
+        <span class="badge-status" style="background:#bae6fd; color:#0369a1;">PENDIENTE</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <div>
+          <span class="label-tiny">Documento</span>
+          <p class="val-strong">${booking.doc || 'Registrado'}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Estancia</span>
+          <p class="val-strong">${booking.startDate} al ${booking.endDate}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Régimen</span>
+          <p class="val-strong">${booking.plan || 'Standard'}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Total Reserva</span>
+          <p class="val-green">${booking.total || '--'}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button onclick="confirmCheckin('${booking.id}')" class="btn-action-primary" style="background:#0F5132;">
+          Completar Check-In
+        </button>
+        <button onclick="closeModal(); triggerToast('Reserva aplazada')" class="btn-action-light">
+          Posponer
+        </button>
+      </div>
+    `;
+  } else {
+    // Occupied
+    modalBody.innerHTML = `
+      <div class="guest-badge-card">
+        <div>
+          <span class="label-tiny">Huésped Titular</span>
+          <span class="guest-name">${booking.guest}</span>
+        </div>
+        <span class="badge-status badge-indigo">OCUPADA</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <div>
+          <span class="label-tiny">Habitación</span>
+          <p class="val-strong">Hab. ${booking.roomId} (${room ? room.type : ''})</p>
+        </div>
+        <div>
+          <span class="label-tiny">Estancia</span>
+          <p class="val-strong">${booking.startDate} al ${booking.endDate}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Régimen</span>
+          <p class="val-strong">${booking.plan || 'Standard'}</p>
+        </div>
+        <div>
+          <span class="label-tiny">Liquidación</span>
+          <p class="val-green">${booking.total || '--'}</p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button onclick="performCheckout('${booking.id}')" class="btn-action-light" style="color:#be123c;">
+          Ejecutar Check-Out
+        </button>
+        <button onclick="closeModal(); triggerToast('Consumo cargado a la habitación')" class="btn-action-primary">
+          Cargar Consumo
+        </button>
+      </div>
+    `;
+  }
+
+  document.getElementById('modalDetail').classList.remove('hidden');
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+}
+
+// Acciones operativas
+function performCheckout(bookingId) {
+  const b = bookingsRegistry.find(x => x.id === bookingId);
+  if (b) {
+    b.status = 'dirty';
+    b.guest = 'Salida de Huésped';
+    b.housekeeper = 'Personal de Limpieza';
+    b.note = 'Desinfección y limpieza de salida';
+    closeModal();
+    renderRack();
+    triggerToast(`Check-out realizado para Hab. ${b.roomId}.`);
+  }
+}
+
+function confirmCheckin(bookingId) {
+  const b = bookingsRegistry.find(x => x.id === bookingId);
+  if (b) {
+    b.status = 'occupied';
+    closeModal();
+    renderRack();
+    triggerToast(`Check-in de ${b.guest} confirmado.`);
+  }
+}
+
+function releaseBooking(bookingId) {
+  bookingsRegistry = bookingsRegistry.filter(b => b.id !== bookingId);
+  closeModal();
+  renderRack();
+  triggerToast(`Habitación liberada a Disponible.`);
+}
+
+function bookSlot(roomId, dateStr) {
+  triggerToast(`Hab. ${roomId} lista para registrar reserva el ${dateStr}. Redirigiendo a Paso 1...`);
+  setTimeout(() => {
+    window.location.href = '../modulo_nueva_reserva_paso_1/code.html';
+  }, 1200);
+}
+
+// Bloqueo manual de habitación
+function openBlockModal() {
+  const select = document.getElementById('selectRoomToBlock');
+  select.innerHTML = '';
+
+  roomsMeta.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.id;
+    opt.textContent = `Habitación ${r.id} (${r.type})`;
+    select.appendChild(opt);
+  });
+
+  document.getElementById('inputBlockReason').value = '';
+  document.getElementById('modalBlock').classList.remove('hidden');
+}
+
+function closeBlockModal() {
+  document.getElementById('modalBlock').classList.add('hidden');
+}
+
+function confirmRoomBlock() {
+  const roomId = document.getElementById('selectRoomToBlock').value;
+  const reason = document.getElementById('inputBlockReason').value.trim() || 'Mantenimiento Preventivo';
+
+  const start = formatDate(currentStartDate);
+  const endD = new Date(currentStartDate);
+  endD.setDate(endD.getDate() + 2);
+  const end = formatDate(endD);
+
+  bookingsRegistry.push({
+    id: 'BLOCK-' + Date.now(),
+    roomId: roomId,
+    status: 'maintenance',
+    guest: 'Bloqueo Técnico',
+    startDate: start,
+    endDate: end,
+    technician: 'Mantenimiento Interno',
+    reason: reason
+  });
+
+  closeBlockModal();
+  renderRack();
+  triggerToast(`Hab. ${roomId} bloqueada del ${start} al ${end}`);
+}
+
+function closeModal() {
+  document.getElementById('modalDetail').classList.add('hidden');
+}
+
+function triggerToast(message) {
+  const toast = document.getElementById('toastNotification');
+  const msgSpan = document.getElementById('toastMessage');
+  msgSpan.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2600);
+}
+
+document.getElementById('filterInput').addEventListener('input', renderRack);
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateWeekHeaders();
+  renderRack();
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+});

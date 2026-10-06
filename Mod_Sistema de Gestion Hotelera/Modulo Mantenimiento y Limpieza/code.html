@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxStay PMS - Limpieza y Mantenimiento</title>
+  <!-- Tipografías: Manrope (títulos), Inter (texto), JetBrains Mono (N° de habitación) e iconos Material Symbols (los del diseño) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== SIDEBAR: menú de navegación entre módulos ===== -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">
+        <h1>LuxStay PMS</h1>
+        <p>Gestión Operativa</p>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="../modulo_de_dashboard/code.html" class="nav-item"><span class="ms">dashboard</span>Dashboard</a>
+        <!-- Módulo de tu compañero (Disponibilidad). Ajusta la ruta si renombran la carpeta -->
+        <a href="../Sistema Web Modulo de Disponibilidad/index.html" class="nav-item"><span class="ms">calendar_month</span>Disponibilidad</a>
+        <a href="../modulo_nueva_reserva_paso_1/code.html" class="nav-item"><span class="ms">add_circle</span>Nueva Reserva</a>
+        <!-- Módulo actual: Limpieza y Mantenimiento -->
+        <a href="code.html" class="nav-item active"><span class="ms">cleaning_services</span>Limpieza</a>
+        <a href="../modulo_de_huespedes_directorio/code.html" class="nav-item"><span class="ms">group</span>Huéspedes</a>
+      </nav>
+
+      <a href="../modulo_nueva_reserva_paso_1/code.html" class="btn-new-res"><span class="ms">add</span>Nueva Reserva</a>
+    </div>
+
+    <div class="sidebar-bottom">
+      <a href="#" class="nav-item"><span class="ms">settings</span>Configuración</a>
+      <a href="#" class="nav-item"><span class="ms">help</span>Ayuda</a>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <!-- ===== TOPBAR =====
+         HU-LM-01: Como recepcionista/ama de llaves, quiero ver y cambiar de sucursal
+         para gestionar la limpieza de cada hotel. -->
+    <header class="topbar">
+      <div class="branch-area">
+        <span class="branch-title">Sucursal: Centro Histórico</span>
+        <div class="branch-tabs" id="branchTabs">
+          <button class="tab active">Centro Histórico</button>
+          <button class="tab">Magisterio</button>
+          <button class="tab">Pisac</button>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <!-- Buscador: filtra la tabla por N° de habitación o tipo -->
+        <label class="search-pill">
+          <span class="ms">search</span>
+          <input type="text" id="searchInput" placeholder="Buscar...">
+        </label>
+        <a href="../modulo_nueva_reserva_paso_1/code.html" class="express-link">Check-in Express</a>
+        <button class="btn-icon" title="Notificaciones"><span class="ms">notifications</span></button>
+        <button class="btn-icon" title="Aplicaciones"><span class="ms">apps</span></button>
+        <!-- Placeholder de la foto de perfil: reemplazar por <img src="..."> -->
+        <div class="avatar">img</div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ===== ENCABEZADO DE PÁGINA =====
+           HU-LM-05: Como ama de llaves, quiero filtrar habitaciones por estado.
+           HU-LM-04: Como técnico/recepcionista, quiero crear un bloqueo por mantenimiento. -->
+      <div class="page-header">
+        <div>
+          <h2>Limpieza y Mantenimiento</h2>
+          <p>Gestión del estado de habitaciones operativas.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline" id="btnFilters"><span class="ms">filter_list</span>Filtros</button>
+          <button class="btn-dark" id="btnNewBlock">Nuevo Bloqueo</button>
+        </div>
+      </div>
+
+      <!-- Panel de filtros (se muestra al pulsar "Filtros") -->
+      <div class="filter-panel hidden" id="filterPanel">
+        <label>Estado:
+          <select id="statusFilter">
+            <option value="all">Todos</option>
+            <option value="limpia">Limpia</option>
+            <option value="sucia">Sucia</option>
+            <option value="mantenimiento">Mantenimiento</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- ===== RESUMEN DE ESTADOS =====
+           HU-LM-02: Como ama de llaves, quiero ver el total de habitaciones limpias,
+           sucias y en mantenimiento para priorizar mi turno. -->
+      <section class="kpi-grid">
+        <div class="kpi kpi-total">
+          <span class="kpi-label"><span class="ms">meeting_room</span>Total Hab.</span>
+          <strong id="kTotal">42</strong>
+        </div>
+        <div class="kpi kpi-clean">
+          <span class="kpi-label"><span class="ms">check_circle</span>Limpias</span>
+          <strong id="kClean">28</strong>
+        </div>
+        <div class="kpi kpi-dirty">
+          <span class="kpi-label"><span class="ms">warning</span>Sucias</span>
+          <strong id="kDirty">12</strong>
+        </div>
+        <div class="kpi kpi-maint">
+          <span class="kpi-label"><span class="ms">build</span>Mantenimiento</span>
+          <strong id="kMaint">2</strong>
+        </div>
+      </section>
+
+      <!-- ===== TABLA DE HABITACIONES =====
+           HU-LM-03: Como ama de llaves, quiero ver el estado y la última limpieza de cada
+           habitación, y marcarla como limpia (✓) o bloquearla por mantenimiento (candado). -->
+      <section class="table-card">
+        <table>
+          <colgroup><col style="width:15.3%"><col style="width:23.3%"><col style="width:23.9%"><col></colgroup>
+          <thead>
+            <tr>
+              <th>Habitación</th>
+              <th>Tipo</th>
+              <th>Estado Actual</th>
+              <th>Última Limpieza</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <!-- Filas generadas desde script.js (datos de ejemplo) -->
+          <tbody id="roomsBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== MODAL: NUEVO BLOQUEO (HU-LM-04) ===== -->
+  <div class="modal-overlay hidden" id="modalBlock">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Nuevo Bloqueo por Mantenimiento</h3>
+        <button class="btn-icon" id="closeModal" title="Cerrar"><span class="ms">close</span></button>
+      </div>
+      <div class="modal-body">
+        <label>Habitación
+          <select id="blockRoom"></select>
+        </label>
+        <label>Motivo técnico
+          <input type="text" id="blockReason" placeholder="Ej: Fuga de agua, falla de A/C...">
+        </label>
+        <div class="modal-actions">
+          <button class="btn-outline" id="cancelModal">Cancelar</button>
+          <button class="btn-dark" id="confirmBlock">Confirmar Bloqueo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>

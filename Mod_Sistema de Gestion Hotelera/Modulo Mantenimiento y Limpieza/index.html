@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxStay PMS - Limpieza y Mantenimiento</title>
+  <!-- Tipografías: Manrope (títulos), Inter (texto), JetBrains Mono (N° de habitación) e iconos Material Symbols (los del diseño) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../shared/nav.css">
+</head>
+<body>
+
+  <!-- ===== SIDEBAR: menú de navegación entre módulos ===== -->
+  <aside class="sidebar">
+  <div class="sidebar-top">
+    <a href="../Menu Principal/index.html" class="brand brand-link" title="Menú Principal">
+      <div class="brand-icon"><i data-lucide="hotel"></i></div>
+      <div class="brand-text"><h1 class="headline">LuxStay PMS</h1><p>Gestión Operativa</p></div>
+    </a>
+    <nav class="nav-menu">
+      <a href="#" class="nav-item disabled" title="Próximamente"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>      <a href="../Modulo Dashboard Ocupacion/index.html" class="nav-item"><i data-lucide="calendar-days"></i><span>Disponibilidad</span></a>      <a href="../Modulo Nueva Reserva/index.html" class="nav-item"><i data-lucide="calendar-plus"></i><span>Nueva Reserva</span></a>      <a href="../Modulo Mantenimiento y Limpieza/index.html" class="nav-item active"><i data-lucide="sparkles"></i><span>Limpieza</span></a>      <a href="../Modulo Huespedes/index.html" class="nav-item"><i data-lucide="users"></i><span>Huéspedes</span></a>            <a href="#!" class="nav-item"><i data-lucide="settings"></i><span>Configuración</span></a>
+<div class="nav-divider"></div>
+      <a href="../Menu Principal/index.html" class="nav-item menu-principal"><i data-lucide="home"></i><span>Menú Principal</span></a>
+    </nav>
+  </div></aside>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="branch-area">
+        <i data-lucide="map-pin" class="icon-pin"></i>
+        <span class="branch-title">Sucursal: <strong id="BranchName">Centro Histórico</strong></span>
+        <div class="branch-tabs" id="branchTabs">
+          <button class="tab" data-suc="Centro Histórico">Centro Histórico</button>
+          <button class="tab" data-suc="Magisterio">Magisterio</button>
+          <button class="tab" data-suc="Pisac">Pisac</button>
+        </div>
+      </div>
+      <div class="user-panel">
+        <div class="search-box"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Buscar habitación, huésped..."></div>
+        <button class="btn-icon" title="Notificaciones"><i data-lucide="bell"></i><span class="badge-dot"></span></button>        <div class="user-profile"><div class="avatar" id="AvatarInitials">CM</div><span class="user-name" id="UserNameTopbar">Carlos M.</span></div>
+        <button id="btnLogoutDash" class="btn-icon" title="Cerrar sesión"><i data-lucide="log-out"></i></button>
+      </div>
+    </header>
+<main class="content">
+
+      <!-- ===== ENCABEZADO DE PÁGINA =====
+           HU-LM-05: Como ama de llaves, quiero filtrar habitaciones por estado.
+           HU-LM-04: Como técnico/recepcionista, quiero crear un bloqueo por mantenimiento. -->
+      <div class="page-header">
+        <div>
+          <h2>Limpieza y Mantenimiento</h2>
+          <p>Gestión del estado de habitaciones operativas.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline" id="btnFilters"><span class="ms">filter_list</span>Filtros</button>
+          <button class="btn-dark" id="btnNewBlock">Nuevo Bloqueo</button>
+        </div>
+      </div>
+
+      <!-- Panel de filtros (se muestra al pulsar "Filtros") -->
+      <div class="filter-panel hidden" id="filterPanel">
+        <label>Estado:
+          <select id="statusFilter">
+            <option value="all">Todos</option>
+            <option value="limpia">Limpia</option>
+            <option value="sucia">Sucia</option>
+            <option value="mantenimiento">Mantenimiento</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- ===== RESUMEN DE ESTADOS =====
+           HU-LM-02: Como ama de llaves, quiero ver el total de habitaciones limpias,
+           sucias y en mantenimiento para priorizar mi turno. -->
+      <section class="kpi-grid">
+        <div class="kpi kpi-total">
+          <span class="kpi-label"><span class="ms">meeting_room</span>Total Hab.</span>
+          <strong id="kTotal">42</strong>
+        </div>
+        <div class="kpi kpi-clean">
+          <span class="kpi-label"><span class="ms">check_circle</span>Limpias</span>
+          <strong id="kClean">28</strong>
+        </div>
+        <div class="kpi kpi-dirty">
+          <span class="kpi-label"><span class="ms">warning</span>Sucias</span>
+          <strong id="kDirty">12</strong>
+        </div>
+        <div class="kpi kpi-maint">
+          <span class="kpi-label"><span class="ms">build</span>Mantenimiento</span>
+          <strong id="kMaint">2</strong>
+        </div>
+      </section>
+
+      <!-- ===== TABLA DE HABITACIONES =====
+           HU-LM-03: Como ama de llaves, quiero ver el estado y la última limpieza de cada
+           habitación, y marcarla como limpia (✓) o bloquearla por mantenimiento (candado). -->
+      <section class="table-card">
+        <table>
+          <colgroup><col style="width:15.3%"><col style="width:23.3%"><col style="width:23.9%"><col></colgroup>
+          <thead>
+            <tr>
+              <th>Habitación</th>
+              <th>Tipo</th>
+              <th>Estado Actual</th>
+              <th>Última Limpieza</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <!-- Filas generadas desde script.js (datos de ejemplo) -->
+          <tbody id="roomsBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== MODAL: NUEVO BLOQUEO (HU-LM-04) ===== -->
+  <div class="modal-overlay hidden" id="modalBlock">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Nuevo Bloqueo por Mantenimiento</h3>
+        <button class="btn-icon" id="closeModal" title="Cerrar"><span class="ms">close</span></button>
+      </div>
+      <div class="modal-body">
+        <label>Habitación
+          <select id="blockRoom"></select>
+        </label>
+        <label>Motivo técnico
+          <input type="text" id="blockReason" placeholder="Ej: Fuga de agua, falla de A/C...">
+        </label>
+        <div class="modal-actions">
+          <button class="btn-outline" id="cancelModal">Cancelar</button>
+          <button class="btn-dark" id="confirmBlock">Confirmar Bloqueo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="../shared/nav.js"></script>
+  <script>window.MODULE_ID = "limpieza";</script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxStay PMS - Módulo de Disponibilidad</title>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="hotel"></i>
+        </div>
+        <div class="brand-text">
+          <h1>LuxStay PMS</h1>
+          <p>Gestión Operativa</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="../modulo_de_dashboard/code.html" class="nav-item">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <!-- Módulo Actual -->
+        <a href="index.html" class="nav-item active">
+          <i data-lucide="calendar-days"></i>
+          <span>Disponibilidad</span>
+        </a>
+
+        <a href="../modulo_nueva_reserva_paso_1/code.html" class="nav-item">
+          <i data-lucide="calendar-plus"></i>
+          <span>Nueva Reserva</span>
+        </a>
+
+        <a href="../modulo_de_limpieza_y_mantenimiento/code.html" class="nav-item">
+          <i data-lucide="sparkles"></i>
+          <span>Limpieza</span>
+        </a>
+
+        <a href="../modulo_de_huespedes_directorio/code.html" class="nav-item">
+          <i data-lucide="users"></i>
+          <span>Huéspedes</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <a href="../modulo_nueva_reserva_paso_1/code.html" class="btn-new-res">
+        <i data-lucide="plus"></i>
+        <span>Nueva Reserva</span>
+      </a>
+      <div class="config-link">
+        <i data-lucide="settings"></i>
+        <a href="#">Configuración</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <div class="main-wrapper">
+    
+    <!-- Topbar con Sucursal Fija -->
+    <header class="topbar">
+      <div class="branch-fixed-info">
+        <div class="branch-pill">
+          <i data-lucide="map-pin" class="icon-pin"></i>
+          <span class="branch-label">Sucursal actual:</span>
+          <strong class="branch-name">Centro Histórico</strong>
+          <span class="branch-lock" title="La sucursal se define según el perfil en el Login">
+            <i data-lucide="lock" style="width:12px; height:12px;"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="user-panel">
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="filterInput" placeholder="Buscar habitación, huésped...">
+        </div>
+        <button class="btn-icon">
+          <i data-lucide="bell"></i>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="user-profile">
+          <div class="avatar">CM</div>
+          <span class="user-name">Carlos M.</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Área de Trabajo -->
+    <main class="content-area">
+      
+      <!-- Encabezado de Página -->
+      <div class="header-section">
+        <div>
+          <h2>Rack de Disponibilidad y Habitaciones</h2>
+          <p>Control visual de estatus, ocupación en tiempo real y asignación de habitaciones.</p>
+        </div>
+        
+        <div class="controls-group">
+          <!-- Navegador de Fechas Dinámico -->
+          <div class="date-navigator">
+            <button id="btnPrevDate" class="btn-date" onclick="navigateWeek(-1)" title="Semana anterior">
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <span id="currentWeekRange">Semana 12 Oct - 18 Oct 2026</span>
+            <button id="btnNextDate" class="btn-date" onclick="navigateWeek(1)" title="Semana siguiente">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+
+          <button class="btn-secondary" onclick="openBlockModal()">
+            <i data-lucide="shield-alert" style="color: #d97706;"></i>
+            <span>Bloquear Habitación</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Leyenda y Métricas -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="status-indicator status-green"></div>
+          <div>
+            <p class="kpi-label">Disponible</p>
+            <span class="kpi-sub" id="countFree">0 Libres</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="status-indicator status-indigo"></div>
+          <div>
+            <p class="kpi-label">Ocupada</p>
+            <span class="kpi-sub" id="countOccupied">0 Ocupadas</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="status-indicator status-blue"></div>
+          <div>
+            <p class="kpi-label">Check-in Hoy</p>
+            <span class="kpi-sub" id="countCheckin">0 Pendientes</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="status-indicator status-amber"></div>
+          <div>
+            <p class="kpi-label">Mantenimiento</p>
+            <span class="kpi-sub" id="countMaintenance">0 Bloqueadas</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="status-indicator status-rose"></div>
+          <div>
+            <p class="kpi-label">Limpieza Pendiente</p>
+            <span class="kpi-sub" id="countDirty">0 Pendientes</span>
+          </div>
+        </div>
+        <div class="kpi-card kpi-highlight">
+          <div>
+            <p class="kpi-label">Ocupación Actual</p>
+            <span class="kpi-value-green" id="kpiOccupancy">76.5%</span>
+          </div>
+          <i data-lucide="trending-up" class="kpi-icon-green"></i>
+        </div>
+      </div>
+
+      <!-- Tabla Gantt Rack -->
+      <div class="rack-card">
+        <div class="rack-header">
+          <div class="filter-box">
+            <label for="categoryFilter">Categoría:</label>
+            <select id="categoryFilter" onchange="renderRack()">
+              <option value="ALL">Todas las Categorías</option>
+              <option value="Standard">Standard</option>
+              <option value="Suite">Suite Ejecutiva</option>
+              <option value="Doble">Doble Twin</option>
+            </select>
+          </div>
+          <span class="rack-hint">Haz clic en una habitación para ver su gestión y opciones correspondientes</span>
+        </div>
+
+        <div class="table-container">
+          <table class="rack-table">
+            <thead>
+              <tr id="rackTableHeadRow">
+                <th class="col-room">Habitación</th>
+                <!-- Los 7 días se generan dinámicamente con JavaScript -->
+              </tr>
+            </thead>
+            <tbody id="rackTableBody">
+              <!-- Renderizado interactivo -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal Detalle según Estado -->
+  <div id="modalDetail" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <i data-lucide="file-text"></i>
+          <h3 id="modalTitle">Gestión de Habitación</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="modalDynamicBody">
+        <!-- Contenido generado condicionalmente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Bloquear Habitación -->
+  <div id="modalBlock" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header" style="background: #1e293b;">
+        <div class="modal-title-box">
+          <i data-lucide="lock" style="color: #f59e0b;"></i>
+          <h3>Bloquear Habitación por Mantenimiento</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeBlockModal()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:#64748b;">Selecciona una habitación disponible y especifica la razón técnica del bloqueo.</p>
+        
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+          <div>
+            <label class="label-tiny">Seleccionar Habitación:</label>
+            <select id="selectRoomToBlock" style="width:100%; padding:8px; border:1px solid #e2e8f0; border-radius:6px; font-size:12px;">
+              <!-- Habitaciones libres generadas dinámicamente -->
+            </select>
+          </div>
+
+          <div>
+            <label class="label-tiny">Motivo Técnico / Avería:</label>
+            <input type="text" id="inputBlockReason" placeholder="Ej: Fuga de agua en ducha, Mantenimiento A/C..." style="width:100%; padding:8px; border:1px solid #e2e8f0; border-radius:6px; font-size:12px;">
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top:16px;">
+          <button onclick="closeBlockModal()" class="btn-action-light">Cancelar</button>
+          <button onclick="confirmRoomBlock()" class="btn-action-primary" style="background:#b45309;">
+            Confirmar Bloqueo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastNotification" class="toast-box">
+    <i data-lucide="check-circle"></i>
+    <span id="toastMessage">Operación realizada con éxito</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

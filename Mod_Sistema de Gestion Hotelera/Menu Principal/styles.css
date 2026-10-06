@@ -1,0 +1,53 @@
+/* Menú: extras + sombras y hover */
+.material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+.icono-btn { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
+  justify-content: center; color: #43474e; transition: all .2s; }
+.icono-btn:hover { background: #e7eeff; color: #111c2c; box-shadow: 0 2px 8px rgba(0,32,69,.15); }
+.chip { display: flex; align-items: center; gap: 6px; background: #f0f3ff; padding: 6px 12px;
+  border-radius: 8px; font-size: 11px; text-transform: uppercase; color: #74777f; font-weight: 700; }
+.chip-verde { display: flex; align-items: center; gap: 6px; background: #9ff5c180; padding: 6px 12px;
+  border-radius: 8px; font-size: 11px; text-transform: uppercase; color: #005231; font-weight: 700; }
+/* Tarjeta de módulo: sombra + hover + animación */
+.card-modulo { text-align: left; background: #fff; border-radius: 12px; padding: 32px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06); border: 1px solid #e7eeff;
+  transition: transform .2s, box-shadow .2s; cursor: pointer; }
+.card-modulo:hover { box-shadow: 0 8px 24px rgba(0,32,69,.14); transform: scale(1.01); }
+.card-modulo.off { cursor: not-allowed; opacity: .85; }
+.card-modulo.off:hover { transform: none; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.plinto { width: 56px; height: 56px; border-radius: 12px; background: #e7eeff; color: #1a365d;
+  display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.card-modulo:hover .plinto { background: #002045; color: #fff; }
+.card-modulo h2 { font-size: 20px; font-weight: 600; color: #002045; }
+.card-modulo p { font-size: 14px; color: #43474e; }
+.card-modulo .flecha { transition: transform .2s; }
+.card-modulo:hover .flecha { transform: translateX(4px); color: #002045; }
+.etiqueta-azul { font-size: 11px; text-transform: uppercase; color: #002045; background: #e7eeff;
+  padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+.etiqueta-verde { font-size: 11px; text-transform: uppercase; color: #0a6c44; background: #9ff5c199;
+  padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+.etiqueta-gris { font-size: 11px; text-transform: uppercase; color: #43474e; background: #dee8ff;
+  padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+.cinta { margin-top: 16px; display: flex; align-items: center; gap: 8px; background: #f0f3ff;
+  padding: 6px 12px; border-radius: 8px; font-size: 12px; color: #43474e; }
+.metrica { display: flex; align-items: center; gap: 12px; }
+.met-ico { width: 40px; height: 40px; border-radius: 8px; background: #e7eeff; color: #002045;
+  display: flex; align-items: center; justify-content: center; }
+.met-ico.verde { background: #9ff5c166; color: #0a6c44; }
+.metrica small { font-size: 11px; color: #74777f; text-transform: uppercase; font-weight: 700; display: block; }
+.metrica b { font-size: 20px; }
+.btn-linea { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 8px; font-size: 13px; }
+.btn-linea:hover { background: #e7eeff; box-shadow: 0 2px 8px rgba(0,32,69,.12); }
+.btn-rojo { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 8px; font-size: 13px; color: #ba1a1a; }
+.btn-rojo:hover { background: #ffdad666; box-shadow: 0 2px 8px rgba(186,26,26,.15); }
+
+/* Logo: click vuelve al Menú Principal */
+.logo-home {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.92;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+.logo-home:hover { opacity: 1; }

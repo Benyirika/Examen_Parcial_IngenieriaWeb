@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxStay PMS - Directorio de Huéspedes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../shared/nav.css">
+</head>
+<body>
+
+  <!-- ===== SIDEBAR: navegación entre módulos (igual que Limpieza) ===== -->
+  <aside class="sidebar">
+  <div class="sidebar-top">
+    <a href="../Menu Principal/index.html" class="brand brand-link" title="Menú Principal">
+      <div class="brand-icon"><i data-lucide="hotel"></i></div>
+      <div class="brand-text"><h1 class="headline">LuxStay PMS</h1><p>Gestión Operativa</p></div>
+    </a>
+    <nav class="nav-menu">
+      <a href="#" class="nav-item disabled" title="Próximamente"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>      <a href="../Modulo Dashboard Ocupacion/index.html" class="nav-item"><i data-lucide="calendar-days"></i><span>Disponibilidad</span></a>      <a href="../Modulo Nueva Reserva/index.html" class="nav-item"><i data-lucide="calendar-plus"></i><span>Nueva Reserva</span></a>      <a href="../Modulo Mantenimiento y Limpieza/index.html" class="nav-item"><i data-lucide="sparkles"></i><span>Limpieza</span></a>      <a href="../Modulo Huespedes/index.html" class="nav-item active"><i data-lucide="users"></i><span>Huéspedes</span></a>            <a href="#!" class="nav-item"><i data-lucide="settings"></i><span>Configuración</span></a>
+<div class="nav-divider"></div>
+      <a href="../Menu Principal/index.html" class="nav-item menu-principal"><i data-lucide="home"></i><span>Menú Principal</span></a>
+    </nav>
+  </div></aside>
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="branch-area">
+        <i data-lucide="map-pin" class="icon-pin"></i>
+        <span class="branch-title">Sucursal: <strong id="BranchName">Centro Histórico</strong></span>
+        <div class="branch-tabs" id="branchTabs">
+          <button class="tab" data-suc="Centro Histórico">Centro Histórico</button>
+          <button class="tab" data-suc="Magisterio">Magisterio</button>
+          <button class="tab" data-suc="Pisac">Pisac</button>
+        </div>
+      </div>
+      <div class="user-panel">
+        <div class="search-box"><i data-lucide="search"></i><input type="text" id="searchInput" placeholder="Buscar habitación, huésped..."></div>
+        <button class="btn-icon" title="Notificaciones"><i data-lucide="bell"></i><span class="badge-dot"></span></button>        <div class="user-profile"><div class="avatar" id="AvatarInitials">CM</div><span class="user-name" id="UserNameTopbar">Carlos M.</span></div>
+        <button id="btnLogoutDash" class="btn-icon" title="Cerrar sesión"><i data-lucide="log-out"></i></button>
+      </div>
+    </header>
+<main class="content">
+
+      <!-- ===== ENCABEZADO · HU-GU-06: Como recepcionista, quiero registrar un nuevo huésped y exportar el directorio ===== -->
+      <div class="page-header">
+        <div>
+          <h2>Directorio de Huéspedes <span class="title-badge" id="activeBadge">142 Activos</span></h2>
+          <p>Gestión centralizada de perfiles, historial de estancias y control de huéspedes activos.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline" id="btnExport"><span class="ms">download</span>Exportar Directorio</button>
+          <button class="btn-dark" id="btnNew"><span class="ms">person_add</span>Nuevo Huésped</button>
+        </div>
+      </div>
+
+      <!-- ===== INDICADORES · HU-GU-02: Como supervisor, quiero ver huéspedes in-house, check-in/out de hoy y VIP para organizar el turno.
+           (Las tarjetas se generan desde script.js según la sucursal) ===== -->
+      <section class="kpi-grid" id="kpiGrid"></section>
+
+      <!-- ===== BÚSQUEDA Y FILTROS · HU-GU-03: Como recepcionista, quiero buscar y filtrar huéspedes por nombre, documento, estado y habitación ===== -->
+      <section class="filters-card">
+        <label class="search-big">
+          <span class="ms">search</span>
+          <input type="text" id="searchInput" placeholder="Buscar por nombre, apellido, código de reserva, DNI o número de pasaporte...">
+          <span class="ms">tune</span>
+        </label>
+        <div class="chips">
+          <select class="chip" id="fState">
+            <option value="all">Todos los estados</option>
+            <option value="inhouse">En Casa (In-House)</option>
+            <option value="outtoday">Check-out Hoy</option>
+            <option value="pending">Check-in Pendiente</option>
+            <option value="done">Completado</option>
+          </select>
+          <select class="chip" id="fRoom">
+            <option value="all">Habitación: Todas</option>
+            <option value="s">Suites</option>
+            <option value="h">Habitaciones</option>
+            <option value="o">Cabañas / Otros</option>
+          </select>
+          <span class="chip chip-static"><span class="ms">calendar_month</span>Estancias: Oct 2026</span>
+          <button class="chip" id="chipVip"><span class="ms">star</span>VIP Activo</button>
+          <button class="chip" id="chipPax"><span class="ms">group</span>Con Acompañantes</button>
+          <button class="clear-link" id="btnClear"><span class="ms">restart_alt</span>Limpiar Filtros</button>
+        </div>
+      </section>
+
+      <!-- ===== LISTADO · HU-GU-04: Como recepcionista, quiero ver documento, habitación, fechas y estado de cada huésped.
+                         HU-GU-05: Como recepcionista, quiero hacer Check-in / Check-out desde la lista. ===== -->
+      <section class="table-card">
+        <table class="gtable">
+          <colgroup><col style="width:27%"><col style="width:12%"><col style="width:17%"><col style="width:11%"><col style="width:12%"><col style="width:13%"><col></colgroup>
+          <thead>
+            <tr><th>HUÉSPED TITULAR</th><th>DOC / PASAPORTE</th><th>HABITACIÓN ASIGNADA</th><th>CHECK-IN (ENTRADA)</th><th>CHECK-OUT (SALIDA)</th><th>ESTADO</th><th class="th-actions">ACCIONES</th></tr>
+          </thead>
+          <tbody id="guestsBody"></tbody>
+        </table>
+        <!-- Paginación (visual) -->
+        <div class="table-foot">
+          <div><span id="footInfo"></span> &nbsp;&nbsp;&nbsp; Filas por página: <select><option>8</option><option>16</option></select></div>
+          <div class="pager" id="pager"></div>
+        </div>
+      </section>
+
+      <!-- Banner informativo: validación de identidad -->
+      <div class="sync-banner">
+        <div><span class="ms">verified_user</span><div><b>Sincronización con Reniec &amp; Migraciones</b>Validación automática de documentos de identidad activa para los huéspedes ingresados hoy.</div></div>
+        <span class="api-ok">API Gateway Operativo</span>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="../shared/nav.js"></script>
+  <script>window.MODULE_ID = "huespedes";</script>
+  <script src="script.js"></script>
+</body>
+</html>
